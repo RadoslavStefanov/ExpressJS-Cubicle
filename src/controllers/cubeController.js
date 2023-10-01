@@ -8,12 +8,11 @@ router.get( "/create", (req, res) => {
 
 
 router.post( "/create", (req, res) => {
-    const { name, description, imageURL, difficultyLevel } = req.body;
-
+    const { name, description, imageUrl, difficultyLevel } = req.body;
     cubeSevice.create({
         name,
         description,
-        imageURL,
+        imageUrl,
         difficultyLevel: Number(difficultyLevel)
     });
 
