@@ -16,3 +16,7 @@ exports.create = (cubeData) => {
 exports.getAll = () => {
     return [...cubes];
 }
+
+exports.getCube = (id) => {
+    return [...cubes].find(x => x.id === id);
+}
