@@ -2,8 +2,20 @@ const router = require("express").Router();
 const cubesService = require("../services/cubeService");
 
 router.get( "/", (req, res) => {
-    const cubes = cubesService.getAll();
-    res.render("index", { cubes });
+    let cubes = cubesService.getAll();
+    const { search, from, to } = req.query;
+
+    if(search)
+        cubes = cubes.filter(x => x.name.toLowerCase().includes(search));
+
+    if(from)
+        cubes = cubes.filter(x => x.difficultyLevel >= from);
+
+    if(to)
+        cubes = cubes.filter(x => x.difficultyLevel <= to);
+
+
+    res.render("index", { cubes, search, from, to });
 });
 router.get( "/about", (req, res) => {
     res.render("about");
