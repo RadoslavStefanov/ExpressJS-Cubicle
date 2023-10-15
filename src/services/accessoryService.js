@@ -8,9 +8,6 @@ exports.create = async (accessoryData) => {
 
 }
 
-exports.getAll = async () => {
-    const accessories = await Accessory.find().lean();
-    return accessories;
-}
+exports.getAll = async () => Accessory.find().lean();
 
 exports.getAccessory = (id) =>  Accessory.findById(id);
