@@ -1,4 +1,4 @@
- const Cube = require("../models/Cube");
+const Cube = require("../models/Cube");
 const cubes = [];
 
 exports.create = async (cubeData) => {
@@ -8,10 +8,9 @@ exports.create = async (cubeData) => {
 
 }
 
-exports.getAll = () => {
-    return [...cubes];
+exports.getAll = async () => {
+    const cubes = await Cube.find().lean();
+    return cubes;
 }
 
-exports.getCube = (id) => {
-    return [...cubes].find(x => x.id === id);
-}
+exports.getCube = (id) =>  Cube.findById(id);
