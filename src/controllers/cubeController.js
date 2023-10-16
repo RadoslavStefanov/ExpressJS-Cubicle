@@ -28,7 +28,10 @@ router.get("/:cubeId/details", async(req, res) => {
         return;
     }
 
-    res.render("cube/details", selectedCube);
+    const accessories = cube.accessories;
+    const hasAccessories = cube.accessories.length > 0;
+
+    res.render("cube/details", {selectedCube, hasAccessories});
 });
 
 
@@ -37,7 +40,7 @@ router.get("/:cubeId/attach-accessory", async (req,res) =>{
 
     const selectedCube = await cubeSevice.getCube(cubeId).lean();
     const accessories = await accessoryService.getAll();
-    const hasAccessories = accessories.length > 0;
+    const hasAccessories = accessories === undefined ? false : accessories.length > 0;
 
     res.render("accessory/attach", { selectedCube, accessories,  hasAccessories});
 });
