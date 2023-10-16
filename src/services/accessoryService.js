@@ -11,3 +11,7 @@ exports.create = async (accessoryData) => {
 exports.getAll = async () => Accessory.find().lean();
 
 exports.getAccessory = (id) =>  Accessory.findById(id);
+
+exports.getWithoutOwned = (accessoryIds) => {
+    return Accessory.find({_id: {$nin: accessoryIds}});
+}
