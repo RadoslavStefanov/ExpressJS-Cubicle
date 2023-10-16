@@ -14,3 +14,10 @@ exports.getAll = async () => {
 }
 
 exports.getCube = (id) =>  Cube.findById(id);
+
+exports.attachAccessory = async (cubeId, accessoryId) => {
+    const cube = this.getCube(cubeId);
+
+    cube.accessories.push(accessoryId);
+    return cube.save();
+}
