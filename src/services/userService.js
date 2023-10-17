@@ -1,12 +1,12 @@
 const User = require("../models/User");
-const bcrypt = require("bcrypt ");
+const bcrypt = require("bcrypt");
 const jwt = require("../lib/jwt");
 
 exports.register = async (userData) => {
     return User.create(userData);
 }
 
-exports.login() = async (loginData) => {    
+exports.login = async (loginData) => {    
     const user = await User.findOne(loginData.username).lean();
 
     
