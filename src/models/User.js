@@ -5,6 +5,12 @@ const userSchema = new mongoose.Schema({
     password: String
 });
 
+userSchema.virtuals('repeatPassword').set(function (value) {
+    if(value !== this.password){
+        throw new mongoose.MongooseError("Password missing");
+    }
+})
+
 const User = mongoose.model("User", userSchema);
 
 module.exports = User; 
