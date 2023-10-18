@@ -6,11 +6,10 @@ exports.register = async (userData) => {
     return User.create(userData);
 }
 
-exports.login = async (loginData) => {    
-    const user = await User.findOne(loginData.username).lean();
-
-    
-    if(!user){
+exports.login = async (username, password) => {    
+    const user = await User.findOne({ username });
+    // validate username
+    if (!user) {
         throw new Error("Invalid username or password!");
     }
 

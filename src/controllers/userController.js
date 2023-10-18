@@ -15,13 +15,11 @@ router.get( "/login", async(req, res) => {
     res.render("user/login");
 });
 
-router.post( "/login", async(req, res) => {
+router.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    const token = await userService.login(username, password);
 
-    const {username, password} = req.body;
-    const token = await userService.login({username, password});
-
-    res.cookie("auth", token, {httpOnly: true});
-
+    res.cookie("auth", token, { httpOnly: true });
     res.redirect("/");
 });
 
