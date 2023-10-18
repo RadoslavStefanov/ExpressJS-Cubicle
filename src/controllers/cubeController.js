@@ -29,8 +29,7 @@ router.get("/:cubeId/details", async(req, res) => {
         res.redirect("/404");
         return;
     }
-
-    console.log(selectedCube)
+    
     const accessories = selectedCube.accessory;
     const hasAccessories = accessories.length > 0;
 
@@ -71,6 +70,16 @@ router.get("/:cubeId/edit", async (req,res) => {
     const options = difficultyLevelOptions(cube.difficultyLevel);
 
     res.render("cube/edit", { cube, options })
+})
+
+router.post("/:cubeId/edit", async (req,res) => {
+    const { cubeId } = req.params;
+    const { name, description, imageUrl, difficultyLevel} = req.body;
+    const payLoad = { name, description, imageUrl, difficultyLevel };
+
+    await cubeService.update(payLoad, cubeId);
+    
+    res.redirect(`/cubes/${cubeId}/details`);
 })
 
 
