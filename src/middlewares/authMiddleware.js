@@ -1,7 +1,7 @@
 const jwt = require("../lib/jwt");
 
 exports.auth = async(req, res, next) => {
-    const token = req.cookie["auth"];
+    const token = req.cookies["auth"];
 
     if(token){
         try{

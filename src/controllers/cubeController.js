@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const cubeSevice = require("../services/cubeService");
+const cubeService = require("../services/cubeService");
 const accessoryService = require("../services/accessoryService");
+const { difficultyLevelOptions } = require("../utils/difficultyOptions");
 
 router.get( "/create", (req, res) => {
     res.render("cube/create");
@@ -9,7 +10,7 @@ router.get( "/create", (req, res) => {
 
 router.post( "/create", async (req, res) => {
     const { name, description, imageUrl, difficultyLevel } = req.body;
-    cubeSevice.create({
+    cubeService.create({
         name,
         description,
         imageUrl,
@@ -22,15 +23,16 @@ router.post( "/create", async (req, res) => {
 
 router.get("/:cubeId/details", async(req, res) => {
     const { cubeId } = req.params;    
-    const selectedCube = await cubeSevice.getCube(cubeId).lean();
+    const selectedCube = await cubeService.getCube(cubeId).lean();
 
     if(!selectedCube){
         res.redirect("/404");
         return;
     }
 
-    const accessories = cube.accessories;
-    const hasAccessories = cube.accessories.length > 0;
+    console.log(selectedCube)
+    const accessories = selectedCube.accessory;
+    const hasAccessories = accessories.length > 0;
 
     res.render("cube/details", {selectedCube, hasAccessories});
 });
@@ -39,7 +41,7 @@ router.get("/:cubeId/details", async(req, res) => {
 router.get("/:cubeId/attach-accessory", async (req,res) =>{
     const { cubeId } = req.params;
 
-    const selectedCube = await cubeSevice.getCube(cubeId).lean();
+    const selectedCube = await cubeService.getCube(cubeId).lean();
     const accessoriesIds = cube.accessories ? cube.accessories.map((a) => a._id) : [] ;
     const accessories = await accessoryService.getWithoutOwned(accessoriesIds).lean();
 
@@ -50,17 +52,25 @@ router.get("/:cubeId/attach-accessory", async (req,res) =>{
 router.post("/:cubeId/attach-accessory", async (req,res) => {
     const { cubeId } = req.params;
     const { accessory: accessoryId} = req.body;
-    await cubeSevice.attachAccessory(cubeId, accessory.accessoryId);
+    await cubeService.attachAccessory(cubeId, accessory.accessoryId);
 
     res.redirect(`/cubes/${cubeId}/details`);
 })
 
 router.get("/:cubeId/delete", async (req,res) => {
-    res.render("cube/delete")
+    const { cubeId } = req.params;
+    const cube = await cubeService.getCube(cubeId).lean();
+    const options = difficultyLevelOptions(cube.difficultyLevel);
+
+    res.render("cube/delete", { cube, options })
 })
 
 router.get("/:cubeId/edit", async (req,res) => {
-    res.render("cube/edit")
+    const { cubeId } = req.params;
+    const cube = await cubeService.getCube(cubeId).lean();
+    const options = difficultyLevelOptions(cube.difficultyLevel);
+
+    res.render("cube/edit", { cube, options })
 })
 
 
