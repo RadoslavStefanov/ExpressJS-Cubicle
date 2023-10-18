@@ -21,3 +21,11 @@ exports.auth = async(req, res, next) => {
     else
         next()
 };
+
+exports.isAuthenticated = (req, res ,next) => {
+    if(!req.user){
+        return res.redirect("/users/login");
+    }
+
+    next();
+}

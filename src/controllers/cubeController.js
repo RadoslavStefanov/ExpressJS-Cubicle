@@ -29,11 +29,11 @@ router.get("/:cubeId/details", async(req, res) => {
         res.redirect("/404");
         return;
     }
-
+    const isOwner = selectedCube.owner?.toString() === req.user._id;
     const accessories = selectedCube.accessory;
     const hasAccessories = accessories?.length > 0;
 
-    res.render("cube/details", {selectedCube, hasAccessories});
+    res.render("cube/details", {selectedCube, hasAccessories, isOwner});
 });
 
 
