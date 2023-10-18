@@ -29,7 +29,7 @@ router.get("/:cubeId/details", async(req, res) => {
         res.redirect("/404");
         return;
     }
-    
+
     const accessories = selectedCube.accessory;
     const hasAccessories = accessories.length > 0;
 
@@ -62,6 +62,13 @@ router.get("/:cubeId/delete", async (req,res) => {
     const options = difficultyLevelOptions(cube.difficultyLevel);
 
     res.render("cube/delete", { cube, options })
+})
+
+router.post("/:cubeId/delete", async (req,res) => {
+    const { cubeId } = req.params;
+    await cubeService.delete(cubeId);
+
+    res.redirect("/");
 })
 
 router.get("/:cubeId/edit", async (req,res) => {
