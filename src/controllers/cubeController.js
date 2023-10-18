@@ -31,7 +31,7 @@ router.get("/:cubeId/details", async(req, res) => {
     }
 
     const accessories = selectedCube.accessory;
-    const hasAccessories = accessories.length > 0;
+    const hasAccessories = accessories?.length > 0;
 
     res.render("cube/details", {selectedCube, hasAccessories});
 });
